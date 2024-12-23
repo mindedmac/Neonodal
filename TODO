@@ -1,6 +1,4 @@
-# Fix errors with ('A', 'A') with pull returning incorrect ammoun when direction is False
-# Add visualization class to Neonodal
-# Add Graph class to Neonodal that will take up all current functions that have been made in neonodal for simplification
+# Get feedback, add more for graph theory
 
 
 # Visualize will use either pyvis or tkinter with another thing to render nodes
