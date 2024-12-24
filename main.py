@@ -2,8 +2,8 @@ from neonodal.neonodal import Neonodal
 
 
 initial_nodes = ['A', 'B', 'C']
-initial_edges = [('A', 'B'), ('B', 'C'), ('C', 'A'), ('A', 'A'), ('A', 'A')]
-graph = Neonodal.Graph(directed=False, nodes=initial_nodes, edges=initial_edges)
+initial_edges = [('A', 'B'), ('B', 'C'), ('C', 'A'), ('A', 'A'), ('A', 'A'), ('B', 'A')]
+graph = Neonodal.Graph(directed = False, nodes = initial_nodes, edges = initial_edges)
 
 graph.__repr__()
 
@@ -30,4 +30,13 @@ print(graph.net_degrees()) ### error as graph is undirected
 star = Neonodal.Star(True, 4)
 print(star.net_degrees())
 print(star.in_degrees())
-star.show() ### WIP 
+star.show() ### WIP
+cycle = Neonodal.Cycle(True, 4)
+cycle.show() ### WIP
+complete = Neonodal.Complete(True, 4)
+complete.show() ### WIP
+bipartite = Neonodal.Bipartite(True, [5, 3])
+bipartite.show() ### WIP
+ntwk = Neonodal.Intertwined_network(True, 4, [3, 2, 3, 2])
+ntwk.show() ### WIP
+graph.show()
