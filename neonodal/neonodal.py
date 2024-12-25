@@ -14,6 +14,7 @@ class Neonodal:
             for u, v in self.edges:
                 self.add_nodes(u)
                 self.add_nodes(v)
+            self.iter = -1
 
         def add(self, u: str, v: str = None) -> None:
             """Add a node or an edge.  If only a node is provided, it adds that node. 
@@ -136,8 +137,20 @@ class Neonodal:
             nx.draw_networkx(graph)
             plt.show()
 
+        def __iter__(self):
+            return self
+        
+        def __next__(self):
+            try:
+                self.iter += 1
+                return self.nodes[self.iter]
+            except:
+                raise StopIteration
+                #raise ValueError('Index of graph out of scope.')
+
         def __repr__(self) -> None:
             return f'Graph(directed={self.directed}, nodes={self.nodes}, edges={self.edges})'
+            
             
     class Path(Graph):
         def __init__(self, directed: bool = False, nodes: int = 0) -> None:
@@ -145,16 +158,12 @@ class Neonodal:
             self.edges = [(u, u + 1)for u in range(nodes - 1)]
             super().__init__(directed, self.nodes, self.edges)
             
-        def __repr__(self) -> None:
-            super().__repr__()
             
     class Cycle(Path):
         def __init__(self, directed: bool = False, nodes: int = 0) -> None:
             super().__init__(directed, nodes)
             super().add_edges((nodes - 1, 0))
             
-        def __repr__(self) -> None:
-            super().__repr__()
             
     class Complete(Graph):
         def __init__(self, directed: bool = False, nodes: int = 0) -> None:
@@ -162,8 +171,6 @@ class Neonodal:
             self.edges = list(combinations(self.nodes, 2))
             super().__init__(directed, self.nodes, self.edges)
             
-        def __repr__(self) -> None:
-            super().__repr__()
             
     class Star(Graph):
         def __init__(self, directed: Optional[bool] = False, nodes: int = 0) -> None:
@@ -171,8 +178,6 @@ class Neonodal:
             self.edges = [(0, i) for i in range(1, nodes)]
             super().__init__(directed, self.nodes, self.edges)
             
-        def __repr__(self) -> None:
-            super().__repr__()
             
     class Bipartite(Graph):
         def __init__(self, directed: bool = False, crowns: List[int] = []) -> None:
@@ -182,9 +187,7 @@ class Neonodal:
             self.nodes = [i for i in range(self.crowns[0] + self.crowns[1])]
             self.edges = [(u, v) for u in range(self.crowns[0]) for v in range(sum(self.crowns)) if u != v and v not in range(self.crowns[0])]
             super().__init__(directed, self.nodes, self.edges)
-        
-        def __repr__(self) -> None:
-            super().__repr__()
+
             
     class Intertwined_network(Graph):
         def __init__(self, directed: bool = False, depth: int = 0, crowns: List[int] = [], continuous: bool = False ) -> None:
@@ -193,14 +196,17 @@ class Neonodal:
             self.crowns = crowns
             self.depth = depth
             self.nodes = [i for i in range(sum(self.crowns))]
-            self.edges = []
-            if continuous:
-                self.edges = [(u, v) for u in range(self.crowns[0]) for v in range(sum(self.crowns)) if u != v and v not in range(self.crowns[0])]    
-            else:
-                self.edges = [(u, v) for i in range(len(crowns) - 1) for u in range(sum(crowns[:i + 1]) - crowns[i], sum(crowns[:i + 1])) for v in range(sum(crowns[:i + 1]), sum(crowns[:i + 2]))]
-            if directed:
-                self.edges += [(v, u) for (u, v) in self.edges]
+            self.edges = [(u, v) for i in range(len(self.crowns) - 1) for u in range(sum(self.crowns[:i + 1]) - self.crowns[i], sum(self.crowns[:i + 1])) for v in range(sum(self.crowns[:i + 1]), sum(self.crowns[:i + 2]))] if not continuous else [(u, v) for u in range(self.crowns[0]) for v in range(sum(self.crowns)) if u != v and v not in range(self.crowns[0])] + ([(v, u) for (u, v) in self.edges] if directed else [])
             super().__init__(directed, self.nodes, self.edges)
                 
-        def __repr__(self) -> None:
-            super().__repr__()
+    
+    class Tree(Graph):
+        def __init__(self, directed: bool = False, depth: int = 0, split: int = 0) -> None:
+            self.directed = directed
+            self.current = 0 
+            A = (1 / (split - 1)) + 1
+            self.nodes = [n for n in range(math.ceil((A * (split ** depth)) - (A / split)))]
+            self.edges = [(u, v) for u in range(depth)]
+
+
+            super().__init__(self.directed, self.nodes, list(self.edges))

@@ -5,6 +5,14 @@ initial_nodes = ['A', 'B', 'C']
 initial_edges = [('A', 'B'), ('B', 'C'), ('C', 'A'), ('A', 'A'), ('A', 'A'), ('B', 'A')]
 graph = Neonodal.Graph(directed = False, nodes = initial_nodes, edges = initial_edges)
 
+for n in graph:
+    print(n)
+
+### iterate over the graphs nodes
+
+#tree = Neonodal.Tree(True, 2, 3)
+#tree.show() ### WIP
+
 graph.__repr__()
 
 graph.add('D')
@@ -37,6 +45,6 @@ complete = Neonodal.Complete(True, 4)
 complete.show() ### WIP
 bipartite = Neonodal.Bipartite(True, [5, 3])
 bipartite.show() ### WIP
-ntwk = Neonodal.Intertwined_network(True, 4, [3, 2, 3, 2])
+ntwk = Neonodal.Intertwined_network(False, 4, [3, 2, 3, 2])
 ntwk.show() ### WIP
 graph.show()

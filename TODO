@@ -1,7 +1,6 @@
 # Get feedback, add more for graph theory
 
-
-# Visualize will use either pyvis or tkinter with another thing to render nodes
+# Finish tree so that it works with depth and split values, -> Got nodes working just edges next.
 # -> find that thing
 
 # improve bad code
